@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONFIG_FILE="services_config.yaml"
-TFVARS_FILE="terraform.tfvars"
+CONFIG_FILE="./services_config.yaml"
+TFVARS_FILE="./terraform.tfvars"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "Services configuration file not found!"
@@ -39,8 +39,8 @@ jq -r '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
       ;;
     iam)
       echo "Adding IAM configuration..."
-      IAM_ROLES=$(jq -c '.services.IAM.roles' "$CONFIG_FILE")
-      IAM_GROUPS=$(jq -c '.services.IAM.groups' "$CONFIG_FILE")
+      IAM_ROLES=$(jq -c '.services.iam.roles' "$CONFIG_FILE")
+      IAM_GROUPS=$(jq -c '.services.iam.groups' "$CONFIG_FILE")
       echo "iam_roles = $IAM_ROLES" >> "$TFVARS_FILE"
       echo "iam_groups = $IAM_GROUPS" >> "$TFVARS_FILE"
       ;;
