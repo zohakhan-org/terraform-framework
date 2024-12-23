@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="services-config.yaml"
+CONFIG_FILE="./scripts/services-config.yaml"
 TFVARS_FILE="./terraform.tfvars"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
