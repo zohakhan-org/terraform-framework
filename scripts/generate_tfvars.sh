@@ -44,7 +44,7 @@ yq   '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
       fi
       ;;
     iam)
-      if yq -e '.services.iam' "$CONFIG_FILE" > /dev/null 2>&1; then
+      if yq  '.services.iam' "$CONFIG_FILE" > /dev/null 2>&1; then
         echo "Adding IAM configuration..."
         IAM_ROLES=$(yq  '.services.iam.roles' "$CONFIG_FILE")
         IAM_GROUPS=$(yq '.services.iam.groups' "$CONFIG_FILE")
