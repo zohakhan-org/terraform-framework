@@ -47,10 +47,10 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt
-      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.ecs
+      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.ecs
       echo "Terraform apply"
 
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"  -target=module.ecs
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"  -target=modules.ecs
       cd - || exit
       ;;
     "iam")
@@ -60,9 +60,9 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt
-      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.iam
+      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam
       echo "Terraform apply"
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=module.iam
+      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.iam
       cd - || exit
       ;;
     "s3")
@@ -72,9 +72,9 @@ for SERVICE in $SELECTED_SERVICES; do
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
       ls -lrt
-      terraform  -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE" -target=module.s3
+      terraform  -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE" -target=modules.s3
       echo "Terraform apply"
-      terraform  -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=module.s3
+      terraform  -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.s3
       cd - || exit
       ;;
     *)
