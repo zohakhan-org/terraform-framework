@@ -5,7 +5,7 @@ echo "services configuration "
 cat services-config.yaml
 echo "services to be deployed "
 cat services_to_deploy.yaml
-echo "terraform.tfvar file"
+echo "terraform.tfvars file"
 cat terraform.tfvars
 
 SERVICES_FILE="services_to_deploy.yaml"
@@ -32,22 +32,22 @@ for SERVICE in $SELECTED_SERVICES; do
     "ecs")
       echo "Deploying ECS service..."
       cd "$MODULES_DIR/ecs" || exit
-      terraform plan -var-file="$TFVARS_FILE" -target=module.ecs
-      terraform apply -var-file="$TFVARS_FILE" -target=module.ecs
+      terraform plan -var-file="$TFVARS_FILE" -chdir="$MODULE_PATH" -target=module.ecs
+      terraform apply -var-file="$TFVARS_FILE" -chdir="$MODULE_PATH" -target=module.ecs
       cd - || exit
       ;;
     "iam")
       echo "Deploying IAM service..."
       cd "$MODULES_DIR/iam" || exit
-      terraform plan -var-file="$TFVARS_FILE" -target=module.iam
-      terraform apply -var-file="$TFVARS_FILE" -target=module.iam
+      terraform plan -var-file="$TFVARS_FILE" -chdir="$MODULE_PATH" -target=module.iam
+      terraform apply -var-file="$TFVARS_FILE" -chdir="$MODULE_PATH" -target=module.iam
       cd - || exit
       ;;
     "s3")
       echo "Deploying S3 service..."
       cd "$MODULES_DIR/s3" || exit
-      terraform plan -var-file="$TFVARS_FILE" -target=module.s3
-      terraform apply -var-file="$TFVARS_FILE" -target=module.s3
+      terraform plan -var-file="$TFVARS_FILE" -chdir="$MODULE_PATH" -target=module.s3
+      terraform apply -var-file="$TFVARS_FILE" -chdir="$MODULE_PATH" -target=module.s3
       cd - || exit
       ;;
     *)
