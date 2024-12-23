@@ -4,6 +4,7 @@ services:
   ecs:
     cluster_name: "my-ecs-cluster"
     instance_type: "t3.medium"
+    ami: "ami-0b0ea68c435eb488d"
   s3:
     bucket_name: "my-app-bucket"
   iam:
