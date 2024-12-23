@@ -41,5 +41,5 @@ def validate_services_to_deploy(services_to_deploy_file):
 
 
 if __name__ == '__main__':
-    services_to_deploy_file = './services_to_deploy.yaml'  # Path to the generated file
+    services_to_deploy_file = 'services_to_deploy.yaml'  # Path to the generated file
     validate_services_to_deploy(services_to_deploy_file)
