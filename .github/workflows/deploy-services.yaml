@@ -67,10 +67,6 @@ jobs:
           chmod +x ./terraform.tfvars
           cat terraform.tfvars
 
-      - name: Terraform Init
-        run: |
-          chmod +x ./scripts/terraform_init.sh
-          ./scripts/terraform_init.sh
 
       - name: Terraform Validate
         run: |
@@ -83,11 +79,6 @@ jobs:
           chmod +x ./scripts/terraform_plan.sh
           ./scripts/terraform_plan.sh
 
-      - name: Terraform Apply
-        if: ${{ github.event.inputs.action == 'apply' }}
-        run: |
-          chmod +x ./scripts/terraform_apply.sh
-          ./scripts/terraform_apply.sh
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
