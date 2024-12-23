@@ -40,8 +40,8 @@ for SERVICE in $SELECTED_SERVICES; do
     case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
-      chmod +r terraform.tfvars
-      terraform -chdir="$MODULE_PATH" validate  -var-file="$TFVARS_FILE"  -target=module.ecs
+      #chmod +r terraform.tfvars
+      terraform -chdir="$MODULE_PATH" validate
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.ecs
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"  -target=module.ecs
       cd - || exit
