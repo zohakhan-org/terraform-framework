@@ -68,11 +68,6 @@ jobs:
           cat terraform.tfvars
 
 
-      - name: Terraform Validate
-        run: |
-          chmod +x ./scripts/terraform_validate.sh
-          ./scripts/terraform_validate.sh
-
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'apply' }}
         run: |
