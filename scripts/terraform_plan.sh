@@ -41,8 +41,13 @@ for SERVICE in $SELECTED_SERVICES; do
     "ecs")
       echo "Deploying ECS service..."
       #chmod +r terraform.tfvars
+      echo "Terraform Validate"
       terraform -chdir="$MODULE_PATH" validate
+      echo "terraform plan"
+
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.ecs
+      echo "Terraform apply"
+
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"  -target=module.ecs
       cd - || exit
       ;;
