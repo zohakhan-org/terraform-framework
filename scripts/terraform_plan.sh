@@ -30,13 +30,15 @@ SELECTED_SERVICES=$(yq -r '.services[]' "$SERVICES_FILE")
 for SERVICE in $SELECTED_SERVICES; do
 
     MODULE_PATH="$MODULES_DIR/$SERVICE"
-    cp terraform.tfvars "$MODULE_PATH/"
+
     # Ensure the module directory exists
     if [[ ! -d "$MODULE_PATH" ]]; then
       echo "Error: Module directory $MODULE_PATH not found!"
       exit 1
     fi
+    cp terraform.tfvars "$MODULE_PATH/"
     terraform -chdir="$MODULE_PATH" init
+
     case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
@@ -44,7 +46,7 @@ for SERVICE in $SELECTED_SERVICES; do
       echo "Terraform Validate"
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
-
+      ls -lrt
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.ecs
       echo "Terraform apply"
 
