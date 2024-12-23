@@ -16,7 +16,7 @@ cat "$CONFIG_FILE"
 # Extract region from the config file
 #AWS_REGION=$(grep '^aws_region:' "$CONFIG_FILE" | awk -F': ' '{print $2}' | tr -d '\"')
 
-AWS_REGION=$(yq -r '.aws_region' $CONFIG_FILE)
+AWS_REGION=$(yq -r '.aws_region' "$CONFIG_FILE")
 
 if [[ -z "$AWS_REGION" ]]; then
   echo "Error: AWS Region is not defined in the configuration file."
