@@ -49,5 +49,5 @@ yq e  '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
       ;;
   esac
 done
-
+cat ./terraform.tfvars
 echo "Terraform tfvars generated successfully!"
