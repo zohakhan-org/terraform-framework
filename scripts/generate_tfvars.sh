@@ -9,6 +9,10 @@ if [[ ! -f "$CONFIG_FILE" ]]; then
 fi
 
 echo "Generating terraform.tfvars..."
+# Debugging: Check the contents of the CONFIG_FILE
+echo "Checking the contents of $CONFIG_FILE..."
+cat "$CONFIG_FILE"
+
 AWS_REGION=$(jq -r '.aws_region' "$CONFIG_FILE")
 if [[ -z "$AWS_REGION" ]]; then
   echo "Error: aws_region not defined in $CONFIG_FILE"
