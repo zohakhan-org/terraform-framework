@@ -43,7 +43,7 @@ jobs:
         id: parse_input
         run: |
           chmod +x ./scripts/generate_services_yaml.sh
-          ./scripts/generate_services_yaml.sh "${{ github.event.inputs.services }}"
+          ./scripts/generate_services_yaml.sh "${{ github.event.inputs.selected_services }}"
           cat services_to_deploy.yaml
 
 
