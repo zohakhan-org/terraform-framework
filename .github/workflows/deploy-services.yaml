@@ -55,16 +55,23 @@ jobs:
         run: |
           chmod +x ./scripts/generate_tfvars.sh
           ./scripts/generate_tfvars.sh
+          cat terraform.tfvars
 
       - name: Terraform Init
-        run: ./scripts/terraform_init.sh
+        run: |
+          chmod +x ./scripts/terraform_init.sh
+          ./scripts/terraform_init.sh
 
       - name: Terraform Validate
-        run: ./scripts/terraform_validate.sh
+        run: |
+          chmod +x ./scripts/terraform_validate.sh
+          ./scripts/terraform_validate.sh
 
       - name: Terraform Plan
         if: ${{ github.event.inputs.action == 'plan' }}
-        run: ./scripts/terraform_plan.sh
+        run: |
+          chmod +x ./scripts/terraform_plan.sh
+          ./scripts/terraform_plan.sh
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
