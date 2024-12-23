@@ -52,7 +52,9 @@ jobs:
           python scripts/validate_services.py services_to_deploy.yaml
 
       - name: Generate terraform.tfvars
-        run: ./scripts/generate_tfvars.sh
+        run: |
+          chmod +x ./scripts/generate_tfvars.sh
+          ./scripts/generate_tfvars.sh
 
       - name: Terraform Init
         run: ./scripts/terraform_init.sh
