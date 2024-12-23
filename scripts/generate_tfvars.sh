@@ -9,23 +9,31 @@ if [[ ! -f "$CONFIG_FILE" ]]; then
 fi
 
 echo "Generating terraform.tfvars..."
-echo "aws_region = \"$(jq -r '.aws_region' "$CONFIG_FILE")\"" > "$TFVARS_FILE"
+AWS_REGION=$(jq -r '.aws_region' "$CONFIG_FILE")
+if [[ -z "$AWS_REGION" ]]; then
+  echo "Error: aws_region not defined in $CONFIG_FILE"
+  exit 1
+fi
+
+# Write aws_region to terraform.tfvars
+echo "aws_region = \"$AWS_REGION\"" > "$TFVARS_FILE"
+
 
 jq -r '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
   case $SERVICE in
-    ECS)
+    ecs)
       echo "Adding ECS configuration..."
       ECS_CLUSTER_NAME=$(jq -r '.services.ECS.cluster_name' "$CONFIG_FILE")
       ECS_INSTANCE_TYPE=$(jq -r '.services.ECS.instance_type' "$CONFIG_FILE")
       echo "ecs_cluster_name = \"$ECS_CLUSTER_NAME\"" >> "$TFVARS_FILE"
       echo "ecs_instance_type = \"$ECS_INSTANCE_TYPE\"" >> "$TFVARS_FILE"
       ;;
-    S3)
+    s3)
       echo "Adding S3 configuration..."
       S3_BUCKET_NAME=$(jq -r '.services.S3.bucket_name' "$CONFIG_FILE")
       echo "s3_bucket_name = \"$S3_BUCKET_NAME\"" >> "$TFVARS_FILE"
       ;;
-    IAM)
+    iam)
       echo "Adding IAM configuration..."
       IAM_ROLES=$(jq -c '.services.IAM.roles' "$CONFIG_FILE")
       IAM_GROUPS=$(jq -c '.services.IAM.groups' "$CONFIG_FILE")
