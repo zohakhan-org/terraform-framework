@@ -32,12 +32,6 @@ jobs:
           sudo apt-get install -y python3 python3-pip
           pip3 install pyyaml
 
-      - name: Restore Terraform State
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-state
-          path: ./terraform/
-
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -52,6 +46,7 @@ jobs:
         run: |
           echo "services:" > services_to_deploy.yaml
           echo "${{ github.event.inputs.services }}" | tr ',' '\n' | awk '{print "  - "$0}' >> services_to_deploy.yaml
+          cat services_to_deploy.yaml
 
 
       - name: Validate Services
@@ -81,7 +76,7 @@ jobs:
 
 
       - name: Restore Terraform State
-        if: steps.action.outputs.action == 'destroy'
+
         uses: actions/download-artifact@v3
         with:
           name: terraform-state
@@ -98,3 +93,10 @@ jobs:
         with:
           name: terraform-state
           path: ./terraform/terraform.tfstate
+
+      - name: Restore Terraform State
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/
