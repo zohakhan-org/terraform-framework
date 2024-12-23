@@ -2,4 +2,7 @@
 
 echo "Running Terraform Plan..."
 ls -lrt
-terraform plan -var-file="./terraform.tfvars"
+cat services-config.yaml
+cat services_to_deploy.yaml
+cat terraform.tfvars
+terraform plan -var-file="terraform.tfvars"
