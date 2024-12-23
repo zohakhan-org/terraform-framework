@@ -45,7 +45,7 @@ jobs:
         id: parse_input
         run: |
           echo "services:" > services_to_deploy.yaml
-          echo "${{ github.event.inputs.services }}" | tr ',' '\n' | awk '{print "  - "$0}' >> services_to_deploy.yaml
+          echo "${{ github.event.inputs.services }}" | tr ',' '\n' | awk '{print "  - "$0}' > services_to_deploy.yaml
           cat services_to_deploy.yaml
 
 
