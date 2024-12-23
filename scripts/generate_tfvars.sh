@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONFIG_FILE="../services-config.yaml"
-TFVARS_FILE="../terraform.tfvars"
+CONFIG_FILE="./services-config.yaml"
+TFVARS_FILE="./terraform.tfvars"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "Services configuration file not found!"
@@ -13,14 +13,14 @@ echo "Generating terraform.tfvars..."
 echo "Checking the contents of $CONFIG_FILE..."
 cat "$CONFIG_FILE"
 
-AWS_REGION=$(yq -r '.aws_region' "$CONFIG_FILE")
+# Extract region from the config file
+AWS_REGION=$(grep '^aws_region:' "$CONFIG_FILE" | awk -F': ' '{print $2}' | tr -d '\"')
+
 if [[ -z "$AWS_REGION" ]]; then
-  echo "Error: aws_region not defined in $CONFIG_FILE"
+  echo "Error: AWS Region is not defined in the configuration file."
   exit 1
 fi
-
-# Write aws_region to terraform.tfvars
-echo "aws_region = \"$AWS_REGION\"" > "$TFVARS_FILE"
+echo "aws_region = \"$AWS_REGION\"" >> "$TFVARS_FILE"
 
 
 jq -r  '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
@@ -40,7 +40,7 @@ jq -r  '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
     iam)
       echo "Adding IAM configuration..."
       IAM_ROLES=$(jq -c '.services.iam.roles' "$CONFIG_FILE")
-      IAM_GROUPS=$(yq -c '.services.iam.groups' "$CONFIG_FILE")
+      IAM_GROUPS=$(jq -c '.services.iam.groups' "$CONFIG_FILE")
       echo "iam_roles = $IAM_ROLES" >> "$TFVARS_FILE"
       echo "iam_groups = $IAM_GROUPS" >> "$TFVARS_FILE"
       ;;
@@ -49,5 +49,5 @@ jq -r  '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
       ;;
   esac
 done
-cat ../terraform.tfvars
+cat ./terraform.tfvars
 echo "Terraform tfvars generated successfully!"
