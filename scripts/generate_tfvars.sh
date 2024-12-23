@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONFIG_FILE="../services-config.yaml"
-TFVARS_FILE="../terraform.tfvars"
+CONFIG_FILE="./services-config.yaml"
+TFVARS_FILE="./terraform.tfvars"
 
 if [[ ! -f "$CONFIG_FILE" ]]; then
   echo "Services configuration file not found!"
@@ -49,5 +49,5 @@ yq e  '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
       ;;
   esac
 done
-cat ../terraform.tfvars
+cat ./terraform.tfvars
 echo "Terraform tfvars generated successfully!"

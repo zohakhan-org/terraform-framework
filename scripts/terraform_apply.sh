@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TFVARS_FILE="../terraform.tfvars"
+TFVARS_FILE="./terraform.tfvars"
 
 echo "Applying Terraform configuration..."
 terraform apply -var-file="$TFVARS_FILE" -auto-approve

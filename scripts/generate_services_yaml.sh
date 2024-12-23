@@ -1,8 +1,8 @@
 #!/bin/bash
 
 SERVICES_INPUT=$1
-CONFIG_FILE="service-config.yaml"
-OUTPUT_FILE="services_to_deploy.yaml"
+CONFIG_FILE="./service-config.yaml"
+OUTPUT_FILE="./services_to_deploy.yaml"
 
 if [[ -z "$SERVICES_INPUT" ]]; then
   echo "No services specified for deployment!"
