@@ -5,7 +5,7 @@ import os
 
 def load_config():
     # Adjust path based on where the script is executed
-    config_path = os.path.join(os.path.dirname(__file__), 'services-config.yaml')
+    config_path = os.path.join(os.path.dirname(__file__), './services-config.yaml')
 
     if not os.path.exists(config_path):
         print(f"Error: Configuration file {config_path} not found.")
