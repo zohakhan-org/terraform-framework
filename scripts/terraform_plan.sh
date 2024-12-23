@@ -8,9 +8,9 @@ cat services_to_deploy.yaml
 echo "terraform.tfvar file"
 cat terraform.tfvars
 
-SERVICES_FILE="./services_to_deploy.yaml"
+SERVICES_FILE="services_to_deploy.yaml"
 # Path to the services configuration file or tfvars file
-TFVARS_FILE="./terraform.tfvars"
+TFVARS_FILE="terraform.tfvars"
 
 # Path to the root module or module directories
 MODULES_DIR="./modules"
