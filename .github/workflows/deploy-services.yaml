@@ -42,7 +42,8 @@ jobs:
       - name: Create services_to_deploy.yaml
         id: parse_input
         run: |
-          run: ./scripts/generate_services_yaml.sh "${{ github.event.inputs.services }}"
+          chmod +x ./scripts/generate_services_yaml.sh
+          ./scripts/generate_services_yaml.sh "${{ github.event.inputs.services }}"
           cat services_to_deploy.yaml
 
 
