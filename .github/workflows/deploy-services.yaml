@@ -56,7 +56,6 @@ jobs:
       - name: Generate terraform.tfvars
         run: |
           chmod +x ./scripts/generate_tfvars.sh
-          chmod +x ./scripts/services-config.yaml
           ./scripts/generate_tfvars.sh
           chmod +x ./terraform.tfvars
           cat terraform.tfvars
