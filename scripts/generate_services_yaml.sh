@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVICES_INPUT=$1
-CONFIG_FILE="./service-config.yaml"
+CONFIG_FILE="./services-config.yaml"
 OUTPUT_FILE="./services_to_deploy.yaml"
 
 if [[ -z "$SERVICES_INPUT" ]]; then
