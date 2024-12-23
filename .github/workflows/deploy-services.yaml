@@ -68,18 +68,22 @@ jobs:
           ./scripts/terraform_validate.sh
 
       - name: Terraform Plan
-        if: ${{ github.event.inputs.action == 'plan' }}
+        if: ${{ github.event.inputs.action == 'apply' }}
         run: |
           chmod +x ./scripts/terraform_plan.sh
           ./scripts/terraform_plan.sh
 
       - name: Terraform Apply
         if: ${{ github.event.inputs.action == 'apply' }}
-        run: ./scripts/terraform_apply.sh
+        run: |
+          chmod +x ./scripts/terraform_apply.sh
+          ./scripts/terraform_apply.sh
 
       - name: Terraform Destroy
         if: ${{ github.event.inputs.action == 'destroy' }}
-        run: ./scripts/terraform_destroy.sh
+        run: |
+          chmod +x ./scripts/terraform_destroy.sh
+          ./scripts/terraform_destroy.sh
 
 
       - name: Restore Terraform State
