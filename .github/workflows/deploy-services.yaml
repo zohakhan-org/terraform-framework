@@ -27,7 +27,9 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo add-apt-repository ppa:rmescandon/yq
           sudo apt-get update
+          sudo apt-get install yq
           sudo apt-get install -y jq
           sudo apt-get install -y python3 python3-pip
           pip3 install pyyaml
@@ -53,8 +55,6 @@ jobs:
 
       - name: Generate terraform.tfvars
         run: |
-          wget https://github.com/mikefarah/yq/releases/download/v4.19.2/yq_linux_amd64 -O /usr/local/bin/yq
-          chmod +x /usr/local/bin/yq
           chmod +x ./scripts/generate_tfvars.sh
           chmod +x ./services-config.yaml
           ./scripts/generate_tfvars.sh
