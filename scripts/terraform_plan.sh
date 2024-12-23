@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "Running Terraform Plan..."
+pwd
 ls -lrt
 echo "services configuration "
 cat services-config.yaml
@@ -12,8 +13,9 @@ SERVICES_FILE="services_to_deploy.yaml"
 # Path to the services configuration file or tfvars file
 TFVARS_FILE="terraform.tfvars"
 
+
 # Path to the root module or module directories
-MODULES_DIR="./modules"
+MODULES_DIR="modules"
 
 if [[ ! -f "$SERVICES_FILE" ]]; then
   echo "Error: $SERVICES_FILE not found!"
@@ -28,7 +30,14 @@ terraform init
 
 # Iterate over the selected services and call the corresponding modules
 for SERVICE in $SELECTED_SERVICES; do
-  case "$SERVICE" in
+    MODULE_PATH="$MODULES_DIR/$SERVICE"
+
+    # Ensure the module directory exists
+    if [[ ! -d "$MODULE_PATH" ]]; then
+      echo "Error: Module directory $MODULE_PATH not found!"
+      exit 1
+    fi
+    case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
       cd "$MODULES_DIR/ecs" || exit
