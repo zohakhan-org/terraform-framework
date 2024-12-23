@@ -11,7 +11,7 @@ cat terraform.tfvars
 
 SERVICES_FILE="services_to_deploy.yaml"
 # Path to the services configuration file or tfvars file
-TFVARS_FILE="./scripts/terraform.tfvars"
+TFVARS_FILE="terraform.tfvars"
 
 
 # Path to the root module or module directories
@@ -40,20 +40,20 @@ for SERVICE in $SELECTED_SERVICES; do
     case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
-      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.ecs
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE"  -target=module.ecs
+      terraform -chdir="$MODULE_PATH" plan  -var-file="././$TFVARS_FILE"  -target=module.ecs
+      terraform -chdir="$MODULE_PATH" apply -var-file="././$TFVARS_FILE"  -target=module.ecs
       cd - || exit
       ;;
     "iam")
       echo "Deploying IAM service..."
-      terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.iam
-      terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=module.iam
+      terraform -chdir="$MODULE_PATH" plan  -var-file="././$TFVARS_FILE"  -target=module.iam
+      terraform -chdir="$MODULE_PATH" apply -var-file="././$TFVARS_FILE" -target=module.iam
       cd - || exit
       ;;
     "s3")
       echo "Deploying S3 service..."
-      terraform  -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE" -target=module.s3
-      terraform  -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=module.s3
+      terraform  -chdir="$MODULE_PATH" plan -var-file="././$TFVARS_FILE" -target=module.s3
+      terraform  -chdir="$MODULE_PATH" apply -var-file="././$TFVARS_FILE" -target=module.s3
       cd - || exit
       ;;
     *)
