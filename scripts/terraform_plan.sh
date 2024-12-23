@@ -31,18 +31,18 @@ for SERVICE in $SELECTED_SERVICES; do
   case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
-      terraform plan -var-file="$TFVARS_FILE" -target=module.ecs
-      terraform apply -var-file="$TFVARS_FILE" -target=module.ecs
+      terraform plan -var-file="$TFVARS_FILE" -chdir="$MODULES_DIR/ecs" -target=module.ecs
+      terraform apply -var-file="$TFVARS_FILE" -chdir="$MODULES_DIR/ecs" -target=module.ecs
       ;;
     "iam")
       echo "Deploying IAM service..."
-      terraform plan -var-file="$TFVARS_FILE" -target=module.iam
-      terraform apply -var-file="$TFVARS_FILE" -target=module.iam
+      terraform plan -var-file="$TFVARS_FILE" -chdir="$MODULES_DIR/iam" -target=module.iam
+      terraform apply -var-file="$TFVARS_FILE" -chdir="$MODULES_DIR/iam" -target=module.iam
       ;;
     "s3")
       echo "Deploying S3 service..."
-      terraform plan -var-file="$TFVARS_FILE" -target=module.s3
-      terraform apply -var-file="$TFVARS_FILE" -target=module.s3
+      terraform plan -var-file="$TFVARS_FILE" -chdir="$MODULES_DIR/iam" -target=module.s3
+      terraform apply -var-file="$TFVARS_FILE" -chdir="$MODULES_DIR/iam" -target=module.s3
       ;;
     *)
       echo "Unknown service: $SERVICE"
