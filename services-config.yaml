@@ -3,8 +3,10 @@ aws_region: "us-east-1"
 services:
   ecs:
     ecs_cluster_name: "my-ecs-cluster"
-    ecs_instance_type: "t3.medium"
     ami: "ami-0b0ea68c435eb488d"
+    ecs_instance_type: "t3.medium"
+    subnet_ids: "subnet-0cca8fd4378a176ff"
+
   s3:
     bucket_name: "my-app-bucket"
   iam:
