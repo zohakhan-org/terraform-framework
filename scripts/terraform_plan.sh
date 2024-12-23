@@ -56,14 +56,24 @@ for SERVICE in $SELECTED_SERVICES; do
     "iam")
       echo "Deploying IAM service..."
       chmod +r terraform.tfvars
+      echo "Terraform Validate"
+      terraform -chdir="$MODULE_PATH" validate
+      echo "terraform plan"
+      ls -lrt
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=module.iam
+      echo "Terraform apply"
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=module.iam
       cd - || exit
       ;;
     "s3")
       echo "Deploying S3 service..."
       chmod +r terraform.tfvars
+      echo "Terraform Validate"
+      terraform -chdir="$MODULE_PATH" validate
+      echo "terraform plan"
+      ls -lrt
       terraform  -chdir="$MODULE_PATH" plan -var-file="$TFVARS_FILE" -target=module.s3
+      echo "Terraform apply"
       terraform  -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=module.s3
       cd - || exit
       ;;
