@@ -40,7 +40,8 @@ for SERVICE in $SELECTED_SERVICES; do
     case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
-      #chmod +r terraform.tfvars
+      chmod +r terraform.tfvars
+      cp terraform.tfvars "$MODULE_PATH/"
       echo "Terraform Validate"
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
