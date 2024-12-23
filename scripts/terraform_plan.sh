@@ -46,7 +46,9 @@ for SERVICE in $SELECTED_SERVICES; do
       echo "Terraform Validate"
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
+      export TF_LOG=DEBUG
       ls -lrt
+      cat "$TFVARS_FILE"
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.ecs
       echo "Terraform apply"
 
