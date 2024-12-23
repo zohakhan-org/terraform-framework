@@ -36,8 +36,6 @@ for SERVICE in $SELECTED_SERVICES; do
       echo "Error: Module directory $MODULE_PATH not found!"
       exit 1
     fi
-    cp terraform.tfvars "$MODULE_PATH/"
-    terraform -chdir="$MODULE_PATH" init
 
     case "$SERVICE" in
     "ecs")
@@ -56,10 +54,12 @@ for SERVICE in $SELECTED_SERVICES; do
     "iam")
       echo "Deploying IAM service..."
       chmod +r terraform.tfvars
+      cp terraform.tfvars "$MODULE_PATH/"
+      terraform -chdir="$MODULE_PATH" init
       echo "Terraform Validate"
       terraform -chdir="$MODULE_PATH" validate
       echo "terraform plan"
-      ls -lrt
+      ls -lrt "$MODULE_PATH"
       terraform -chdir="$MODULE_PATH" plan  -var-file="$TFVARS_FILE"  -target=modules.iam
       echo "Terraform apply"
       terraform -chdir="$MODULE_PATH" apply -var-file="$TFVARS_FILE" -target=modules.iam
