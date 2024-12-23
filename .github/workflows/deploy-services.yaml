@@ -43,12 +43,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: "us-east-1"
 
+
+
+
       - name: Create services_to_deploy.yaml
         id: parse_input
         run: |
           chmod +x ./scripts/generate_services_yaml.sh
           ./scripts/generate_services_yaml.sh "${{ github.event.inputs.selected_services }}"
+          echo "SELECTED_SERVICES=${{ github.event.inputs.selected_services }}" >> $GITHUB_ENV
           cat services_to_deploy.yaml
+          echo "$SELECTED_SERVICES"
 
 
       - name: Validate Services
