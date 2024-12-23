@@ -1,7 +1,9 @@
+# modules/ecs/main.tf
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "example-cluster"
+  name = var.ecs_cluster_name
 }
 
-output "ecs_cluster_name" {
-  value = aws_ecs_cluster.ecs_cluster.name
+resource "aws_instance" "ecs_instance" {
+  instance_type = var.ecs_instance_type
+  # other configurations
 }

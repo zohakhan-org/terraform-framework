@@ -25,12 +25,13 @@ module "iam" {
 }
 
 # Dynamically include ECS module
+# main.tf (Root module)
 module "ecs" {
-  source        = "./modules/ecs"
-  for_each      = toset(contains(local.services_to_deploy, "ecs") ? ["ecs"] : [])
-  cluster_name  = var.ecs_cluster_name
-  instance_type = var.ecs_instance_type
+  source          = "./modules/ecs"
+  ecs_cluster_name = var.ecs_cluster_name
+  ecs_instance_type = var.ecs_instance_type
 }
+
 
 # Dynamically include S3 module
 module "s3" {
