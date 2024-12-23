@@ -33,6 +33,7 @@ jobs:
           pip3 install pyyaml
 
 
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
