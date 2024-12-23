@@ -1,27 +1,42 @@
 import sys
 import yaml
+import os
 
-def validate_services(input_services, config_file="service-config.yaml"):
-    try:
-        with open(config_file, "r") as file:
-            config = yaml.safe_load(file)
-            available_services = config.get("services", {}).keys()
 
-        invalid_services = [s for s in input_services if s not in available_services]
+def load_config():
+    # Adjust path based on where the script is executed
+    config_path = os.path.join(os.path.dirname(__file__), '../services-config.yaml')
 
-        if invalid_services:
-            print(f"Invalid services: {', '.join(invalid_services)}")
-            sys.exit(1)
+    if not os.path.exists(config_path):
+        print(f"Error: Configuration file {config_path} not found.")
+        exit(1)
 
-        print("All services are valid!")
-    except FileNotFoundError:
-        print(f"Configuration file {config_file} not found.")
-        sys.exit(1)
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: python validate_services.py <comma-separated-services>")
-        sys.exit(1)
 
-    services = sys.argv[1].split(",")
-    validate_services(services)
+def validate_services_to_deploy(services_to_deploy_file):
+    if not os.path.exists(services_to_deploy_file):
+        print(f"Error: services_to_deploy.yaml not found at {services_to_deploy_file}.")
+        exit(1)
+
+    with open(services_to_deploy_file, 'r') as file:
+        services_to_deploy = yaml.safe_load(file)
+
+    # Perform validation logic here, compare services in the two files
+    config = load_config()
+    services_in_config = config.get('services', [])
+    services_in_deploy = services_to_deploy.get('services', [])
+
+    for service in services_in_deploy:
+        if service not in services_in_config:
+            print(f"Error: Service {service} is not defined in services-config.yaml.")
+            exit(1)
+
+    print("Services validation passed.")
+
+
+if __name__ == '__main__':
+    services_to_deploy_file = 'services_to_deploy.yaml'  # Path to the generated file
+    validate_services_to_deploy(services_to_deploy_file)
