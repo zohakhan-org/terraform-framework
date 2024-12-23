@@ -25,18 +25,18 @@ fi
 # Read the services to deploy from the YAML file using yq
 SELECTED_SERVICES=$(yq -r '.services[]' "$SERVICES_FILE")
 
-# Initialize Terraform (only once for all modules)
-terraform init
 
 # Iterate over the selected services and call the corresponding modules
 for SERVICE in $SELECTED_SERVICES; do
-    MODULE_PATH="$MODULES_DIR/$SERVICE"
 
+    MODULE_PATH="$MODULES_DIR/$SERVICE"
+    cp terraform.tfvars "$MODULE_PATH/"
     # Ensure the module directory exists
     if [[ ! -d "$MODULE_PATH" ]]; then
       echo "Error: Module directory $MODULE_PATH not found!"
       exit 1
     fi
+    terraform -chdir="$MODULE_PATH" init
     case "$SERVICE" in
     "ecs")
       echo "Deploying ECS service..."
