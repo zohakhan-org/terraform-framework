@@ -1,0 +1,41 @@
+#!/bin/bash
+
+CONFIG_FILE="services_to_deploy.yaml"
+TFVARS_FILE="terraform.tfvars"
+
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  echo "Services configuration file not found!"
+  exit 1
+fi
+
+echo "Generating terraform.tfvars..."
+echo "aws_region = \"$(jq -r '.aws_region' "$CONFIG_FILE")\"" > "$TFVARS_FILE"
+
+jq -r '.services | keys[]' "$CONFIG_FILE" | while read -r SERVICE; do
+  case $SERVICE in
+    ECS)
+      echo "Adding ECS configuration..."
+      ECS_CLUSTER_NAME=$(jq -r '.services.ECS.cluster_name' "$CONFIG_FILE")
+      ECS_INSTANCE_TYPE=$(jq -r '.services.ECS.instance_type' "$CONFIG_FILE")
+      echo "ecs_cluster_name = \"$ECS_CLUSTER_NAME\"" >> "$TFVARS_FILE"
+      echo "ecs_instance_type = \"$ECS_INSTANCE_TYPE\"" >> "$TFVARS_FILE"
+      ;;
+    S3)
+      echo "Adding S3 configuration..."
+      S3_BUCKET_NAME=$(jq -r '.services.S3.bucket_name' "$CONFIG_FILE")
+      echo "s3_bucket_name = \"$S3_BUCKET_NAME\"" >> "$TFVARS_FILE"
+      ;;
+    IAM)
+      echo "Adding IAM configuration..."
+      IAM_ROLES=$(jq -c '.services.IAM.roles' "$CONFIG_FILE")
+      IAM_GROUPS=$(jq -c '.services.IAM.groups' "$CONFIG_FILE")
+      echo "iam_roles = $IAM_ROLES" >> "$TFVARS_FILE"
+      echo "iam_groups = $IAM_GROUPS" >> "$TFVARS_FILE"
+      ;;
+    *)
+      echo "Unknown service: $SERVICE"
+      ;;
+  esac
+done
+
+echo "Terraform tfvars generated successfully!"

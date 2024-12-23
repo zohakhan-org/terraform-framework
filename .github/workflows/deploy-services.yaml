@@ -1,0 +1,93 @@
+name: AWS Infrastructure Deployment Framework
+
+on:
+  workflow_dispatch:
+    inputs:
+      selected_services:
+        description: "Comma-separated list of AWS services to deploy (e.g., vpc,s3,eks)"
+        required: true
+        default: "vpc,s3"
+      action:
+        description: "Select action: apply or destroy"
+        required: true
+        default: "apply"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.7.4
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq
+          sudo apt-get install -y yq
+          sudo apt-get install -y python3 python3-pip
+          pip3 install pyyaml
+
+      - name: Restore Terraform State
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/
+
+
+      - name: Create services_to_deploy.yaml
+        id: parse_input
+        run: |
+          echo "services:" > services_to_deploy.yaml
+          echo "${{ github.event.inputs.services }}" | tr ',' '\n' | awk '{print "  - "$0}' >> services_to_deploy.yaml
+
+
+      - name: Validate Services
+        run: |
+          python scripts/validate_services.py services_to_deploy.yaml
+
+      - name: Generate terraform.tfvars
+        run: ./scripts/generate_tfvars.sh
+
+      - name: Terraform Init
+        run: ./scripts/terraform_init.sh
+
+      - name: Terraform Validate
+        run: ./scripts/terraform_validate.sh
+
+      - name: Terraform Plan
+        if: ${{ github.event.inputs.action == 'plan' }}
+        run: ./scripts/terraform_plan.sh
+
+      - name: Terraform Apply
+        if: ${{ github.event.inputs.action == 'apply' }}
+        run: ./scripts/terraform_apply.sh
+
+      - name: Terraform Destroy
+        if: ${{ github.event.inputs.action == 'destroy' }}
+        run: ./scripts/terraform_destroy.sh
+
+
+      - name: Restore Terraform State
+        if: steps.action.outputs.action == 'destroy'
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/
+
+
+      - name: Clean up
+        run: |
+          rm services_to_deploy.yaml
+
+      - name: Save Terraform State
+        if: always() && ${{ github.event.inputs.action == 'apply' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-state
+          path: ./terraform/terraform.tfstate
