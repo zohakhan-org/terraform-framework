@@ -13,6 +13,8 @@ def load_config():
 
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)
+    config_services = [service.lower() for service in config.get('services', [])]
+
     return config
 
 
@@ -23,6 +25,7 @@ def validate_services_to_deploy(services_to_deploy_file):
 
     with open(services_to_deploy_file, 'r') as file:
         services_to_deploy = yaml.safe_load(file)
+    services_to_deploy_list = [service.lower() for service in services_to_deploy.get('services', [])]
 
     # Perform validation logic here, compare services in the two files
     config = load_config()
