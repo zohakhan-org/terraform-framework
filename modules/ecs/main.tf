@@ -54,8 +54,6 @@ resource "aws_ecs_service" "ecs_service" {
   desired_count   = 1
   launch_type     = "EC2"
 
-  # Auto-scaling configuration (optional)
-  desired_count   = 1
   minimum_healthy_percent = 100
 }
 
